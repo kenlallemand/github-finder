@@ -27,10 +27,13 @@ class App extends Component {
     // eslint-disable-next-line
     const res = await axios.get('https://api.github.com/search/users?q='+text+'&client_id='+process.env.REACT_APP_GITHUB_CLIENT_ID+'&client_secret='+process.env.REACT_APP_GITHUB_CLIENT_SECRET);
 
-    this.setState({users: res.data.items, loading: false});
-    console.log(text);
+    await this.setState({users: res.data.items, loading: false});
+    console.log(res.data.items.length);
     
-  }
+  };
+
+  //clear user from state
+  clearUsers = () => this.setState({users: [], loading: false});
 
   render(){
     
@@ -38,7 +41,7 @@ class App extends Component {
       <div className='App'>
         <Navbar/>
         <div className="container">
-          <Search searchUsers={this.searchUsers}/>
+          <Search searchUsers={this.searchUsers} clearUsers={this.clearUsers} showClear={this.state.users.length > 0 ? true : false} />
           <Users loading={this.state.loading} users={this.state.users}/>
         </div>
         
